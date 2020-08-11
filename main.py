@@ -15,9 +15,14 @@ def limit_handler(cursor):
         time.sleep(1000)
 
 
-# Generous bot
-for follower in limit_handler(tweepy.Cursor(api.followers).items()):
-    if follower.name == 'Some name':
-        print(follower.name)
-        follower.follow()
+searchString = 'Emanuel Ciuca'
+numberOfTweets = 2
+
+for tweet in tweepy.Cursor(api.search, searchString).items(numberOfTweets):
+    try:
+        tweet.favorite()
+        print('I liked that tweet')
+    except tweepy.TweepError as e:
+        print(e.reason)
+    except StopIteration:
         break
